@@ -1,5 +1,7 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
+import useFetch from "../../../hooks/useFetch";
+import {  useSelector } from "react-redux/es/hooks/useSelector";
 import "./style.scss";
 
 const HeroBanner = () => {
@@ -7,6 +9,14 @@ const HeroBanner = () => {
     const [query, setQuery] = useState("");
     
     const navigate = useNavigate();
+    const { url } = useSelector((state)=> state.home)
+    const { data, loading } = useFetch("/movie/upcoming");
+
+    useEffect(()=>{
+        const bg = url.backdrop + data?.results?.[Math.floor(Math.random()*20)]?.backdrop_path
+        console.log(bg)
+    },[data])
+    console.log(data);
     const searchQueryHandler = (event) =>{
         setQuery('gg');
         if(event.key === "Enter" && query.length > 0 ){
