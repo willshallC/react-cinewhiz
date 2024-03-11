@@ -3,9 +3,11 @@ import { useNavigate } from "react-router-dom";
 import useFetch from "../../../hooks/useFetch";
 import {  useSelector } from "react-redux/es/hooks/useSelector";
 import "./style.scss";
+import Img from "../../../components/laztLoadImage/Img";
+import ContentWrapper from "../../../components/contentWrapper/ContentWrapper";
 
 const HeroBanner = () => {
-    const [backgroundm, setBackground] = useState("");
+    const [background, setBackground] = useState("");
     const [query, setQuery] = useState("");
     
     const navigate = useNavigate();
@@ -13,18 +15,21 @@ const HeroBanner = () => {
     const { data, loading } = useFetch("/movie/upcoming");
 
     useEffect(()=>{
-        const bg = url.backdrop + data?.results?.[Math.floor(Math.random()*20)]?.backdrop_path
+        const bg = url.backdrop + data?.results?.[Math.floor(Math.random()*20)]?.backdrop_path;
+        setBackground(bg)
         console.log(bg)
     },[data])
     console.log(data);
     const searchQueryHandler = (event) =>{
-        setQuery('gg');
         if(event.key === "Enter" && query.length > 0 ){
             navigate(`/search/${query}`)
         }
     }
     return(
         <div className="heroBanner">
+            { !loading &&  <div className="backdrop-img">
+                <Img  src={background}/>
+            </div> }
             <div className="wrapper">
                 <div className="heroBannerContent">
                     <span className="title">Welcome</span>
